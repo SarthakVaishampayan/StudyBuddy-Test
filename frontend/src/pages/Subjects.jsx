@@ -19,9 +19,9 @@ const PRIORITIES = ['High', 'Medium', 'Low'];
 
 const priorityBadge = (p) => {
   const map = {
-    High:   'bg-danger  bg-opacity-10 text-danger',
+    High: 'bg-danger  bg-opacity-10 text-danger',
     Medium: 'bg-warning bg-opacity-10 text-warning',
-    Low:    'bg-success bg-opacity-10 text-success',
+    Low: 'bg-success bg-opacity-10 text-success',
   };
   return map[p] || map['Medium'];
 };
@@ -30,7 +30,7 @@ const ProgressBar = ({ topics }) => {
   if (!topics.length) return (
     <div className="text-muted" style={{ fontSize: '11px' }}>No topics yet</div>
   );
-  const done    = topics.filter(t => t.completed).length;
+  const done = topics.filter(t => t.completed).length;
   const percent = Math.round((done / topics.length) * 100);
   return (
     <div>
@@ -52,20 +52,20 @@ const Subjects = () => {
   const { token } = useAuth();
   const { notifySuccess, notifyError, notifyInfo } = useNotification();
 
-  const [subjects, setSubjects]       = useState([]);
-  const [loading, setLoading]         = useState(true);
-  const [reminders, setReminders]     = useState([]);
-  const [expandedId, setExpandedId]   = useState(null);
-  const [showModal, setShowModal]     = useState(false);
+  const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [reminders, setReminders] = useState([]);
+  const [expandedId, setExpandedId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [topicInputs, setTopicInputs] = useState({});
   const [addingTopic, setAddingTopic] = useState({});
 
   const [form, setForm] = useState({
-    name:     '',
-    emoji:    '📚',
-    color:    '#8b5cf6',
+    name: '',
+    emoji: '📚',
+    color: '#8b5cf6',
     priority: 'Medium',
-    notes:    '',
+    notes: '',
   });
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const Subjects = () => {
       try {
         const headers = { Authorization: `Bearer ${token}` };
         const [sRes, rRes] = await Promise.all([
-          fetch(`${API_BASE}/api/subjects`,  { headers }),
+          fetch(`${API_BASE}/api/subjects`, { headers }),
           fetch(`${API_BASE}/api/reminders`, { headers }),
         ]);
         const [sData, rData] = await Promise.all([sRes.json(), rRes.json()]);
@@ -94,10 +94,10 @@ const Subjects = () => {
   const handleAddSubject = async (e) => {
     e.preventDefault();
     try {
-      const res  = await fetch(`${API_BASE}/api/subjects`, {
-        method:  'POST',
+      const res = await fetch(`${API_BASE}/api/subjects`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify(form),
+        body: JSON.stringify(form),
       });
       const data = await res.json();
       if (data.success) {
@@ -116,8 +116,8 @@ const Subjects = () => {
   const handleDelete = async (id, name) => {
     if (!window.confirm(`Delete "${name}"? All its topics will be removed.`)) return;
     try {
-      const res  = await fetch(`${API_BASE}/api/subjects/${id}`, {
-        method:  'DELETE',
+      const res = await fetch(`${API_BASE}/api/subjects/${id}`, {
+        method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -134,10 +134,10 @@ const Subjects = () => {
     const title = (topicInputs[subjectId] || '').trim();
     if (!title) return;
     try {
-      const res  = await fetch(`${API_BASE}/api/subjects/${subjectId}/topics`, {
-        method:  'POST',
+      const res = await fetch(`${API_BASE}/api/subjects/${subjectId}/topics`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify({ title }),
+        body: JSON.stringify({ title }),
       });
       const data = await res.json();
       if (data.success) {
@@ -151,8 +151,8 @@ const Subjects = () => {
 
   const handleToggleTopic = async (subjectId, topicId) => {
     try {
-      const res  = await fetch(`${API_BASE}/api/subjects/${subjectId}/topics/${topicId}`, {
-        method:  'PATCH',
+      const res = await fetch(`${API_BASE}/api/subjects/${subjectId}/topics/${topicId}`, {
+        method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -166,8 +166,8 @@ const Subjects = () => {
 
   const handleDeleteTopic = async (subjectId, topicId) => {
     try {
-      const res  = await fetch(`${API_BASE}/api/subjects/${subjectId}/topics/${topicId}`, {
-        method:  'DELETE',
+      const res = await fetch(`${API_BASE}/api/subjects/${subjectId}/topics/${topicId}`, {
+        method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -227,9 +227,9 @@ const Subjects = () => {
           <div className="row g-4">
             {subjects.map(subject => {
               const isExpanded = expandedId === subject._id;
-              const done       = subject.topics.filter(t => t.completed).length;
-              const total      = subject.topics.length;
-              const percent    = total ? Math.round((done / total) * 100) : 0;
+              const done = subject.topics.filter(t => t.completed).length;
+              const total = subject.topics.length;
+              const percent = total ? Math.round((done / total) * 100) : 0;
 
               return (
                 <div key={subject._id} className="col-lg-6 col-xl-4">
@@ -475,9 +475,8 @@ const Subjects = () => {
                     <button
                       key={p}
                       type="button"
-                      className={`btn btn-sm rounded-pill px-3 fw-bold ${
-                        form.priority === p ? 'btn-primary' : 'btn-light'
-                      }`}
+                      className={`btn btn-sm rounded-pill px-3 fw-bold ${form.priority === p ? 'btn-primary' : 'btn-light'
+                        }`}
                       onClick={() => setForm({ ...form, priority: p })}
                     >
                       {p}

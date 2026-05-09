@@ -16,8 +16,8 @@ import {
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
-  'January','February','March','April','May','June',
-  'July','August','September','October','November','December'
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
 const StudyGoalCard = () => {
@@ -474,16 +474,16 @@ const StudyGoalCard = () => {
                 const baseBg = cell.isSelected
                   ? '#6366f1'
                   : cell.hasGoal
-                  ? '#8b5cf6'
-                  : cell.isToday
-                  ? '#f3f4f6'
-                  : 'transparent';
+                    ? '#8b5cf6'
+                    : cell.isToday
+                      ? '#f3f4f6'
+                      : 'transparent';
 
                 const baseColor = cell.isSelected || cell.hasGoal
                   ? '#fff'
                   : cell.isPast
-                  ? '#d1d5db'
-                  : '#374151';
+                    ? '#d1d5db'
+                    : '#374151';
 
                 return (
                   <button

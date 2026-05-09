@@ -6,13 +6,13 @@ import { API_BASE } from '../lib/api';
 
 const AskAI = () => {
   const { token, user } = useAuth();
-  
+
   const [documents, setDocuments] = useState([]);
   const [activeDoc, setActiveDoc] = useState(null);
-  
+
   const [uploading, setUploading] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  
+
   const [query, setQuery] = useState('');
   const [result, setResult] = useState('');
   const [quizData, setQuizData] = useState(null);
@@ -71,9 +71,9 @@ const AskAI = () => {
     if (!file) return;
 
     const isPdf = file.type === 'application/pdf';
-    const isPpt = file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation' || 
-                  file.type === 'application/vnd.ms-powerpoint' ||
-                  file.name.endsWith('.ppt') || file.name.endsWith('.pptx');
+    const isPpt = file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation' ||
+      file.type === 'application/vnd.ms-powerpoint' ||
+      file.name.endsWith('.ppt') || file.name.endsWith('.pptx');
 
     if (!isPdf && !isPpt) {
       setError('Please upload a valid PDF or PowerPoint file.');
@@ -85,7 +85,7 @@ const AskAI = () => {
       e.target.value = null;
       return;
     }
-    
+
     if (isPpt && file.size > 10 * 1024 * 1024) {
       setError('PowerPoint files must be under 10MB.');
       e.target.value = null;
@@ -105,14 +105,14 @@ const AskAI = () => {
         headers: { Authorization: `Bearer ${token}` },
         body: formData
       });
-      
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Upload failed');
-      
+
       await fetchDocuments();
       setActiveDoc(data.document);
       setResult('PDF parsed and ready! Select an action below.');
-      
+
     } catch (err) {
       setError(err.message);
     } finally {
@@ -142,7 +142,7 @@ const AskAI = () => {
 
   const handleAction = async (actionType) => {
     if (!activeDoc) return;
-    
+
     setIsProcessing(true);
     setError('');
     setResult('');
@@ -151,19 +151,19 @@ const AskAI = () => {
     try {
       const res = await fetch(`${API_BASE}/api/ai/action`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}` 
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ documentId: activeDoc._id, actionType })
       });
-      
+
       const data = await res.json();
       if (!res.ok) {
         if (res.status === 429) setRateLimitTimer(60);
         throw new Error(data.message || 'Action failed');
       }
-      
+
       if (actionType === 'quiz') {
         try {
           // Strip possible markdown code fences just in case
@@ -196,19 +196,19 @@ const AskAI = () => {
     try {
       const res = await fetch(`${API_BASE}/api/ai/ask`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}` 
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ documentId: activeDoc._id, question: query })
       });
-      
+
       const data = await res.json();
       if (!res.ok) {
         if (res.status === 429) setRateLimitTimer(60);
         throw new Error(data.message || 'Ask failed');
       }
-      
+
       setResult(data.answer);
       setQuery('');
     } catch (err) {
@@ -269,7 +269,7 @@ const AskAI = () => {
           {questions.map((q, qi) => {
             const userAns = selected[qi];
             const isCorrect = submitted && userAns === q.answer;
-            const isWrong   = submitted && userAns && userAns !== q.answer;
+            const isWrong = submitted && userAns && userAns !== q.answer;
             return (
               <div key={qi} className="rounded-3 p-3" style={{ background: submitted ? (isCorrect ? '#f0fdf4' : isWrong ? '#fef2f2' : '#f9fafb') : '#f9fafb', border: '1px solid', borderColor: submitted ? (isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#e5e7eb') : '#e5e7eb' }}>
                 <p className="fw-semibold mb-3" style={{ fontSize: '15px' }}>
@@ -280,10 +280,10 @@ const AskAI = () => {
                   {q.options.map((opt) => {
                     const letter = opt.charAt(0);
                     const isSelected = userAns === letter;
-                    const isAnswer   = submitted && q.answer === letter;
+                    const isAnswer = submitted && q.answer === letter;
                     let bg = 'white', border = '#dee2e6', color = '#1f2937', fw = 'normal';
                     if (isSelected && !submitted) { bg = '#eff6ff'; border = '#3b82f6'; color = '#1d4ed8'; fw = '600'; }
-                    if (isAnswer)                 { bg = '#f0fdf4'; border = '#22c55e'; color = '#15803d'; fw = '600'; }
+                    if (isAnswer) { bg = '#f0fdf4'; border = '#22c55e'; color = '#15803d'; fw = '600'; }
                     if (isSelected && !isAnswer && submitted) { bg = '#fef2f2'; border = '#ef4444'; color = '#b91c1c'; fw = '600'; }
                     return (
                       <button
@@ -336,7 +336,7 @@ const AskAI = () => {
           <h2 className="fw-bold mb-0 text-dark">Ask AI</h2>
         </div>
       </div>
-      
+
       <p className="text-muted mb-4 lead">
         Upload a PDF to generate notes, quizzes, summaries, or ask specific questions completely grounded in your document.
       </p>
@@ -357,29 +357,29 @@ const AskAI = () => {
         <div className="col-lg-4">
           <div className="bg-white rounded-4 shadow-sm border p-4 h-100">
             <h5 className="fw-bold mb-3 d-flex align-items-center gap-2">
-              <FileText size={20} className="text-primary" /> 
+              <FileText size={20} className="text-primary" />
               Your Documents
             </h5>
-            
+
             {/* Upload Area */}
             {uploading ? (
               <div className="d-block w-100 p-4 rounded-3 border border-2 border-dashed text-center d-flex flex-column align-items-center justify-content-center mb-4" style={{ backgroundColor: '#f8f9fa', borderColor: '#dee2e6' }}>
-                 <Loader2 size={28} className="text-primary mb-2 spin mx-auto d-block" />
-                 <span className="fw-medium text-secondary">Extracting text...</span>
+                <Loader2 size={28} className="text-primary mb-2 spin mx-auto d-block" />
+                <span className="fw-medium text-secondary">Extracting text...</span>
               </div>
             ) : (
               <div className="d-flex gap-3 mb-4">
                 <label className="w-50 p-3 rounded-3 border border-2 border-dashed text-center d-flex flex-column align-items-center justify-content-center transition-all bg-light" style={{ cursor: 'pointer', borderColor: '#dee2e6' }}>
                   <FileText size={24} className="text-danger mb-2" />
                   <span className="small fw-bold text-secondary">Upload PDF</span>
-                  <span className="text-muted" style={{fontSize:'11px'}}>(Max 5MB)</span>
+                  <span className="text-muted" style={{ fontSize: '11px' }}>(Max 5MB)</span>
                   <input type="file" accept="application/pdf" className="d-none" onChange={handleFileUpload} disabled={uploading} />
                 </label>
-                
+
                 <label className="w-50 p-3 rounded-3 border border-2 border-dashed text-center d-flex flex-column align-items-center justify-content-center bg-light" style={{ cursor: 'pointer', borderColor: '#dee2e6' }}>
                   <Presentation size={24} className="text-warning mb-2" />
                   <span className="small fw-bold text-secondary">Upload PPT</span>
-                  <span className="text-muted" style={{fontSize:'11px'}}>(Max 10MB)</span>
+                  <span className="text-muted" style={{ fontSize: '11px' }}>(Max 10MB)</span>
                   <input type="file" accept=".ppt,.pptx,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" className="d-none" onChange={handleFileUpload} disabled={uploading} />
                 </label>
               </div>
@@ -391,7 +391,7 @@ const AskAI = () => {
                 <p className="text-muted text-center small mt-2">No documents uploaded yet.</p>
               ) : (
                 documents.map(doc => (
-                  <div 
+                  <div
                     key={doc._id}
                     onClick={() => { setActiveDoc(doc); setResult(''); setError(''); }}
                     className={`d-flex justify-content-between align-items-center p-3 rounded-3 border transition-all ${activeDoc?._id === doc._id ? 'border-primary bg-primary bg-opacity-10' : 'bg-white'}`}
@@ -418,7 +418,7 @@ const AskAI = () => {
         {/* Right Column: AI Actions & Results */}
         <div className="col-lg-8">
           <div className="bg-white rounded-4 shadow-sm border p-4 h-100 d-flex flex-column">
-            
+
             {!activeDoc ? (
               <div className="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-muted">
                 <FileText size={48} className="mb-3 opacity-25" />
@@ -453,7 +453,7 @@ const AskAI = () => {
                     <Brain size={16} className="me-2 text-success" /> Generate Quiz
                   </button>
                   <button onClick={() => handleAction('notes')} className="btn btn-light border fw-medium small rounded-pill px-3 py-2 text-dark" disabled={isProcessing || rateLimitTimer > 0}>
-                    <Pencil size={16} className="me-2" style={{color: '#8b5cf6'}}/> Create Notes
+                    <Pencil size={16} className="me-2" style={{ color: '#8b5cf6' }} /> Create Notes
                   </button>
                 </div>
 
@@ -461,17 +461,17 @@ const AskAI = () => {
                 <h6 className="fw-bold mb-3 text-secondary small text-uppercase">Ask specifically</h6>
                 <form onSubmit={handleAsk} className="mb-4">
                   <div className="input-group">
-                    <input 
-                      type="text" 
-                      className="form-control form-control-lg border-end-0 bg-light rounded-start-pill ps-4" 
-                      placeholder="e.g., Explain the main theory in chapter 2..." 
+                    <input
+                      type="text"
+                      className="form-control form-control-lg border-end-0 bg-light rounded-start-pill ps-4"
+                      placeholder="e.g., Explain the main theory in chapter 2..."
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       disabled={isProcessing}
                       style={{ fontSize: '15px' }}
                     />
-                    <button 
-                      className="btn btn-primary rounded-end-pill px-4" 
+                    <button
+                      className="btn btn-primary rounded-end-pill px-4"
                       type="submit"
                       disabled={isProcessing || rateLimitTimer > 0 || !query.trim()}
                     >
@@ -483,22 +483,22 @@ const AskAI = () => {
                 {/* Response Box */}
                 <div className="flex-grow-1 border rounded-3 p-4 bg-light overflow-auto" style={{ minHeight: '400px', maxHeight: '75vh' }}>
                   {isProcessing ? (
-                     <div className="h-100 d-flex flex-column align-items-center justify-content-center text-muted">
-                        <Loader2 size={40} className="spin mb-3 text-primary" style={{ animation: 'spin 1s linear infinite' }} />
-                        <h6 className="fw-bold text-dark mb-1">{getThinkingMessage()}</h6>
-                        <p className="small mb-0 text-muted fw-medium">Elapsed time: {processingTime}s</p>
-                        <style>{`@keyframes spin { 100% { transform: rotate(360deg); } } .spin { animation: spin 1s linear infinite; }`}</style>
-                     </div>
+                    <div className="h-100 d-flex flex-column align-items-center justify-content-center text-muted">
+                      <Loader2 size={40} className="spin mb-3 text-primary" style={{ animation: 'spin 1s linear infinite' }} />
+                      <h6 className="fw-bold text-dark mb-1">{getThinkingMessage()}</h6>
+                      <p className="small mb-0 text-muted fw-medium">Elapsed time: {processingTime}s</p>
+                      <style>{`@keyframes spin { 100% { transform: rotate(360deg); } } .spin { animation: spin 1s linear infinite; }`}</style>
+                    </div>
                   ) : quizData ? (
                     <QuizRenderer questions={quizData} />
                   ) : result ? (
                     <div className="h-100">
                       <div className="d-flex justify-content-end mb-3 sticky-top bg-light pb-2" style={{ top: '-10px', zIndex: 10 }}>
-                        <button 
-                           className="btn btn-outline-primary fw-bold shadow-sm rounded-pill d-flex align-items-center px-3 py-2 bg-white" 
-                           onClick={() => setIsExpanded(true)}
+                        <button
+                          className="btn btn-outline-primary fw-bold shadow-sm rounded-pill d-flex align-items-center px-3 py-2 bg-white"
+                          onClick={() => setIsExpanded(true)}
                         >
-                           <Maximize2 size={18} className="me-2" /> Read in Full Screen
+                          <Maximize2 size={18} className="me-2" /> Read in Full Screen
                         </button>
                       </div>
                       <div className="text-dark markdown-body" style={{ lineHeight: '1.6' }}>

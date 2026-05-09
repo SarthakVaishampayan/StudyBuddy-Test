@@ -14,33 +14,33 @@ const Settings = () => {
 
   const [reminders, setReminders] = useState([]);
   const [profileLoading, setProfileLoading] = useState(false);
-  const [pwLoading, setPwLoading]           = useState(false);
+  const [pwLoading, setPwLoading] = useState(false);
 
   const [profileForm, setProfileForm] = useState({
-    name:      '',
+    name: '',
     studyGoal: '',
-    bio:       '',
+    bio: '',
   });
 
   const [pwForm, setPwForm] = useState({
     current: '',
-    newPw:   '',
+    newPw: '',
     confirm: '',
   });
 
   const [preferences, setPreferences] = useState({
-    emailNotif:  true,
-    pushNotif:   true,
-    darkMode:    false,
+    emailNotif: true,
+    pushNotif: true,
+    darkMode: false,
     focusSounds: false,
   });
 
   useEffect(() => {
     if (user) {
       setProfileForm({
-        name:      user.name      || '',
+        name: user.name || '',
         studyGoal: user.studyGoal || '',
-        bio:       user.bio       || '',
+        bio: user.bio || '',
       });
     }
   }, [user]);
@@ -49,7 +49,7 @@ const Settings = () => {
     if (!token) return;
     const fetchReminders = async () => {
       try {
-        const res  = await fetch(`${API_BASE}/api/reminders`, {
+        const res = await fetch(`${API_BASE}/api/reminders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -65,10 +65,10 @@ const Settings = () => {
     const next = !preferences[key];
     setPreferences(prev => ({ ...prev, [key]: next }));
     notifyInfo(
-      `${key === 'emailNotif'  ? 'Email notifications' :
-         key === 'pushNotif'   ? 'Browser notifications' :
-         key === 'darkMode'    ? 'Dark mode' :
-                                 'Focus sounds'} ${next ? 'enabled' : 'disabled'}.`
+      `${key === 'emailNotif' ? 'Email notifications' :
+        key === 'pushNotif' ? 'Browser notifications' :
+          key === 'darkMode' ? 'Dark mode' :
+            'Focus sounds'} ${next ? 'enabled' : 'disabled'}.`
     );
   };
 
@@ -76,24 +76,24 @@ const Settings = () => {
     e.preventDefault();
     setProfileLoading(true);
     try {
-      const res  = await fetch(`${API_BASE}/api/auth/update`, {
-        method:  'PATCH',
+      const res = await fetch(`${API_BASE}/api/auth/update`, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:  `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          name:      profileForm.name,
+          name: profileForm.name,
           studyGoal: profileForm.studyGoal,
-          bio:       profileForm.bio,
+          bio: profileForm.bio,
         }),
       });
       const data = await res.json();
 
       if (res.ok && data.success) {
         updateUser({
-          name:      data.user.name,
-          bio:       data.user.bio,
+          name: data.user.name,
+          bio: data.user.bio,
           studyGoal: data.user.studyGoal,
         });
         notifySuccess('Profile updated successfully!');
@@ -120,15 +120,15 @@ const Settings = () => {
     }
     setPwLoading(true);
     try {
-      const res  = await fetch(`${API_BASE}/api/auth/change-password`, {
-        method:  'PATCH',
+      const res = await fetch(`${API_BASE}/api/auth/change-password`, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:  `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           currentPassword: pwForm.current,
-          newPassword:     pwForm.newPw,
+          newPassword: pwForm.newPw,
         }),
       });
       const data = await res.json();
@@ -311,32 +311,32 @@ const Settings = () => {
               <div className="p-4 d-flex flex-column gap-4">
                 {[
                   {
-                    key:   'emailNotif',
-                    icon:  <Mail size={20} />,
+                    key: 'emailNotif',
+                    icon: <Mail size={20} />,
                     color: 'text-primary bg-primary',
                     title: 'Email Notifications',
-                    desc:  'Weekly summaries and deadline alerts sent to your email.',
+                    desc: 'Weekly summaries and deadline alerts sent to your email.',
                   },
                   {
-                    key:   'pushNotif',
-                    icon:  <Smartphone size={20} />,
+                    key: 'pushNotif',
+                    icon: <Smartphone size={20} />,
                     color: 'text-info bg-info',
                     title: 'Browser Notifications',
-                    desc:  'Get alerted in-browser when timer ends or reminders are due.',
+                    desc: 'Get alerted in-browser when timer ends or reminders are due.',
                   },
                   {
-                    key:   'darkMode',
-                    icon:  <Moon size={20} />,
+                    key: 'darkMode',
+                    icon: <Moon size={20} />,
                     color: 'text-dark bg-dark',
                     title: 'Dark Mode',
-                    desc:  'Switch to a darker theme for late-night study sessions.',
+                    desc: 'Switch to a darker theme for late-night study sessions.',
                   },
                   {
-                    key:   'focusSounds',
-                    icon:  <Volume2 size={20} />,
+                    key: 'focusSounds',
+                    icon: <Volume2 size={20} />,
                     color: 'text-success bg-success',
                     title: 'Focus Sounds',
-                    desc:  'Play ambient noise (lo-fi, rain, white noise) during sessions.',
+                    desc: 'Play ambient noise (lo-fi, rain, white noise) during sessions.',
                   },
                 ].map(item => (
                   <div key={item.key} className="d-flex justify-content-between align-items-center">
