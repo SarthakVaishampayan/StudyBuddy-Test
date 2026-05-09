@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useLiveLocalDay } from '../utils/date';
 import { useNotification } from '../context/NotificationContext';
+import { API_BASE } from '../lib/api';
 import {
   Target,
   Flame,
@@ -82,8 +83,8 @@ const StudyGoalCard = () => {
       const headers = { Authorization: `Bearer ${token}` };
 
       const [gRes, sRes] = await Promise.all([
-        fetch(`http://localhost:5000/api/daily-goal/day?date=${dateStr}`, { headers }),
-        fetch('http://localhost:5000/api/daily-goal/streak', { headers }),
+        fetch(`${API_BASE}/api/daily-goal/day?date=${dateStr}`, { headers }),
+        fetch(`${API_BASE}/api/daily-goal/streak`, { headers }),
       ]);
 
       const [gData, sData] = await Promise.all([gRes.json(), sRes.json()]);
@@ -115,7 +116,7 @@ const StudyGoalCard = () => {
     if (!token) return;
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const res = await fetch(`http://localhost:5000/api/daily-goal/month?month=${month}&year=${year}`, { headers });
+      const res = await fetch(`${API_BASE}/api/daily-goal/month?month=${month}&year=${year}`, { headers });
       const data = await res.json();
       if (data?.success) setGoalDates(new Set(data.dates || []));
       else setGoalDates(new Set());
@@ -179,7 +180,7 @@ const StudyGoalCard = () => {
       setBusy(true);
       setLoading(true);
 
-      const res = await fetch('http://localhost:5000/api/daily-goal', {
+      const res = await fetch(`${API_BASE}/api/daily-goal`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ goalSeconds: sec, targetDate: selectedDate }),

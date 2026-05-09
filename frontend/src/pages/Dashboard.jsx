@@ -6,6 +6,7 @@ import HabitCalendarModal from '../components/HabitCalendarModal';
 import { useAuth } from '../context/AuthContext';
 import { useTimer } from '../context/TimerContext';
 import { useLiveLocalDay } from '../utils/date';
+import { API_BASE } from '../lib/api';
 
 import {
   Play, Pause, Save, RotateCcw, Check, Plus, Trash2,
@@ -75,11 +76,11 @@ const Dashboard = () => {
       const headers = { Authorization: `Bearer ${token}` };
 
       const [hRes, sRes, wRes, tRes, rRes] = await Promise.all([
-        fetch('http://localhost:5000/api/habits', { headers }),
-        fetch('http://localhost:5000/api/sessions/today', { headers }),
-        fetch('http://localhost:5000/api/sessions/weekly-stats', { headers }),
-        fetch('http://localhost:5000/api/tasks', { headers }),
-        fetch('http://localhost:5000/api/reminders', { headers }),
+        fetch(`${API_BASE}/api/habits`, { headers }),
+        fetch(`${API_BASE}/api/sessions/today`, { headers }),
+        fetch(`${API_BASE}/api/sessions/weekly-stats`, { headers }),
+        fetch(`${API_BASE}/api/tasks`, { headers }),
+        fetch(`${API_BASE}/api/reminders`, { headers }),
       ]);
 
       const [hData, sData, wData, tData, rData] = await Promise.all([
@@ -131,7 +132,7 @@ const Dashboard = () => {
     e.preventDefault();
     if (!newHabitName.trim()) return;
 
-    await fetch('http://localhost:5000/api/habits', {
+    await fetch(`${API_BASE}/api/habits`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ name: newHabitName.trim() }),
@@ -143,7 +144,7 @@ const Dashboard = () => {
   };
 
   const handleToggleHabit = async (id) => {
-    await fetch(`http://localhost:5000/api/habits/${id}/toggle`, {
+    await fetch(`${API_BASE}/api/habits/${id}/toggle`, {
       method: 'PATCH',
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -152,7 +153,7 @@ const Dashboard = () => {
 
   const handleDeleteHabit = async () => {
     if (!deleteHabitId) return;
-    await fetch(`http://localhost:5000/api/habits/${deleteHabitId}`, {
+    await fetch(`${API_BASE}/api/habits/${deleteHabitId}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -164,7 +165,7 @@ const Dashboard = () => {
     e.preventDefault();
     if (!newTaskText.trim()) return;
 
-    await fetch('http://localhost:5000/api/tasks', {
+    await fetch(`${API_BASE}/api/tasks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ text: newTaskText.trim(), dueDate: newTaskDueDate || null }),
@@ -180,7 +181,7 @@ const Dashboard = () => {
     e.preventDefault();
     if (!reminderForm.text.trim() || !reminderForm.deadline) return;
 
-    await fetch('http://localhost:5000/api/reminders', {
+    await fetch(`${API_BASE}/api/reminders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ text: reminderForm.text.trim(), deadline: reminderForm.deadline }),
@@ -198,7 +199,7 @@ const Dashboard = () => {
       return;
     }
 
-    const res = await fetch('http://localhost:5000/api/sessions', {
+    const res = await fetch(`${API_BASE}/api/sessions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ durationInSeconds: duration }),

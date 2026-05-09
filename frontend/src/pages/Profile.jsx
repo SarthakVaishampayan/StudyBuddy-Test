@@ -6,6 +6,7 @@ import {
   User, Mail, Calendar, Trophy,
   Clock, CheckSquare
 } from 'lucide-react';
+import { API_BASE } from '../lib/api';
 
 const Profile = () => {
   const { user, token } = useAuth();
@@ -30,10 +31,10 @@ const Profile = () => {
         const headers = { Authorization: `Bearer ${token}` };
 
         const [wRes, tRes, hRes, rRes] = await Promise.all([
-          fetch('http://localhost:5000/api/sessions/weekly-stats', { headers }),
-          fetch('http://localhost:5000/api/tasks',     { headers }),
-          fetch('http://localhost:5000/api/habits',    { headers }),
-          fetch('http://localhost:5000/api/reminders', { headers }),
+          fetch(`${API_BASE}/api/sessions/weekly-stats`, { headers }),
+          fetch(`${API_BASE}/api/tasks`,     { headers }),
+          fetch(`${API_BASE}/api/habits`,    { headers }),
+          fetch(`${API_BASE}/api/reminders`, { headers }),
         ]);
 
         const [wData, tData, hData, rData] = await Promise.all([

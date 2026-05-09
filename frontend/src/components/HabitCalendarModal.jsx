@@ -25,7 +25,7 @@ const HabitCalendarModal = ({ habit, onClose }) => {
       setLoading(true);
       try {
         const res  = await fetch(
-          `http://localhost:5000/api/habits/${habit._id}/calendar?month=${month}&year=${year}`,
+          `${API_BASE}/api/habits/${habit._id}/calendar?month=${month}&year=${year}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const data = await res.json();

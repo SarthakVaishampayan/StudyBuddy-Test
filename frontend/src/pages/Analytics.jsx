@@ -8,6 +8,7 @@ import {
   Tooltip, ResponsiveContainer, Cell, Legend
 } from 'recharts';
 import { Clock, Calendar, Flame, TrendingUp } from 'lucide-react';
+import { API_BASE } from '../lib/api';
 
 const Analytics = () => {
   const { token } = useAuth();
@@ -38,11 +39,11 @@ const Analytics = () => {
       const headers = { Authorization: `Bearer ${token}` };
 
       const [wRes, rRes, sRes, gwRes, hRes] = await Promise.all([
-        fetch('http://localhost:5000/api/sessions/weekly-stats', { headers }),
-        fetch('http://localhost:5000/api/reminders', { headers }),
-        fetch('http://localhost:5000/api/daily-goal/streak', { headers }),
-        fetch('http://localhost:5000/api/daily-goal/weekly', { headers }),
-        fetch('http://localhost:5000/api/habits', { headers }),
+        fetch(`${API_BASE}/api/sessions/weekly-stats`, { headers }),
+        fetch(`${API_BASE}/api/reminders`, { headers }),
+        fetch(`${API_BASE}/api/daily-goal/streak`, { headers }),
+        fetch(`${API_BASE}/api/daily-goal/weekly`, { headers }),
+        fetch(`${API_BASE}/api/habits`, { headers }),
       ]);
 
       const [wData, rData, sData, gwData, hData] = await Promise.all([

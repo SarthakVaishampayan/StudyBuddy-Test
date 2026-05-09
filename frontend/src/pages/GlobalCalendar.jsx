@@ -9,6 +9,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE } from '../lib/api';
 
 const locales = { 'en-US': enUS };
 
@@ -39,7 +40,7 @@ const GlobalCalendar = () => {
     const fetchCalendar = async () => {
       try {
         const headers = { Authorization: `Bearer ${token}` };
-        const res = await fetch('http://localhost:5000/api/calendar', { headers });
+        const res = await fetch(`${API_BASE}/api/calendar`, { headers });
         const data = await res.json();
 
         if (data.success) {

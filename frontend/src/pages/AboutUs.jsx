@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
+import { API_BASE } from '../lib/api';
 import {
   Mail, Github, Linkedin, Send, Bug, MessageSquare, Sparkles,
   Timer, BarChart3, CheckCircle2, CalendarDays, ListChecks,
@@ -27,7 +28,7 @@ const AboutUs = () => {
 
   useEffect(() => {
     if (!token) return;
-    fetch('http://localhost:5000/api/reminders', {
+    fetch(`${API_BASE}/api/reminders`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(r => r.json())

@@ -6,6 +6,7 @@ import {
   Plus, Trash2, ChevronDown, ChevronUp,
   CheckCircle, Circle, X, BookOpen
 } from 'lucide-react';
+import { API_BASE } from '../lib/api';
 
 const COLORS = [
   '#8b5cf6', '#6366f1', '#ec4899', '#f59e0b',
@@ -74,8 +75,8 @@ const Subjects = () => {
       try {
         const headers = { Authorization: `Bearer ${token}` };
         const [sRes, rRes] = await Promise.all([
-          fetch('http://localhost:5000/api/subjects',  { headers }),
-          fetch('http://localhost:5000/api/reminders', { headers }),
+          fetch(`${API_BASE}/api/subjects`,  { headers }),
+          fetch(`${API_BASE}/api/reminders`, { headers }),
         ]);
         const [sData, rData] = await Promise.all([sRes.json(), rRes.json()]);
         if (sData.success) setSubjects(sData.subjects);
@@ -93,7 +94,7 @@ const Subjects = () => {
   const handleAddSubject = async (e) => {
     e.preventDefault();
     try {
-      const res  = await fetch('http://localhost:5000/api/subjects', {
+      const res  = await fetch(`${API_BASE}/api/subjects`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body:    JSON.stringify(form),
@@ -115,7 +116,7 @@ const Subjects = () => {
   const handleDelete = async (id, name) => {
     if (!window.confirm(`Delete "${name}"? All its topics will be removed.`)) return;
     try {
-      const res  = await fetch(`http://localhost:5000/api/subjects/${id}`, {
+      const res  = await fetch(`${API_BASE}/api/subjects/${id}`, {
         method:  'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -133,7 +134,7 @@ const Subjects = () => {
     const title = (topicInputs[subjectId] || '').trim();
     if (!title) return;
     try {
-      const res  = await fetch(`http://localhost:5000/api/subjects/${subjectId}/topics`, {
+      const res  = await fetch(`${API_BASE}/api/subjects/${subjectId}/topics`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body:    JSON.stringify({ title }),
@@ -150,7 +151,7 @@ const Subjects = () => {
 
   const handleToggleTopic = async (subjectId, topicId) => {
     try {
-      const res  = await fetch(`http://localhost:5000/api/subjects/${subjectId}/topics/${topicId}`, {
+      const res  = await fetch(`${API_BASE}/api/subjects/${subjectId}/topics/${topicId}`, {
         method:  'PATCH',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -165,7 +166,7 @@ const Subjects = () => {
 
   const handleDeleteTopic = async (subjectId, topicId) => {
     try {
-      const res  = await fetch(`http://localhost:5000/api/subjects/${subjectId}/topics/${topicId}`, {
+      const res  = await fetch(`${API_BASE}/api/subjects/${subjectId}/topics/${topicId}`, {
         method:  'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });

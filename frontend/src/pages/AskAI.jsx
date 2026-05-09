@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Upload, FileText, Trash2, Send, Loader2, List, BookOpen, Brain, Pencil, Maximize2, Minimize2, Presentation, Menu } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { API_BASE } from '../lib/api';
 
 const AskAI = () => {
   const { token, user } = useAuth();
@@ -50,7 +51,7 @@ const AskAI = () => {
 
   const fetchDocuments = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/ai/documents', {
+      const res = await fetch(`${API_BASE}/api/ai/documents`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
@@ -99,7 +100,7 @@ const AskAI = () => {
     formData.append('file', file);
 
     try {
-      const res = await fetch('http://localhost:5000/api/ai/upload', {
+      const res = await fetch(`${API_BASE}/api/ai/upload`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
@@ -123,7 +124,7 @@ const AskAI = () => {
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     try {
-      const res = await fetch(`http://localhost:5000/api/ai/${id}`, {
+      const res = await fetch(`${API_BASE}/api/ai/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -148,7 +149,7 @@ const AskAI = () => {
     setQuizData(null);
 
     try {
-      const res = await fetch('http://localhost:5000/api/ai/action', {
+      const res = await fetch(`${API_BASE}/api/ai/action`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -193,7 +194,7 @@ const AskAI = () => {
     setQuizData(null);
 
     try {
-      const res = await fetch('http://localhost:5000/api/ai/ask', {
+      const res = await fetch(`${API_BASE}/api/ai/ask`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

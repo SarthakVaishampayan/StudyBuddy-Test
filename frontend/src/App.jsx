@@ -18,6 +18,7 @@ import { AuthProvider, useAuth }                   from './context/AuthContext';
 import { TimerProvider, useTimer }                 from './context/TimerContext';
 import { NotificationProvider, useNotification }   from './context/NotificationContext';
 import NotificationToast                           from './components/NotificationToast';
+import { API_BASE } from './lib/api';
 
 import { Save, RotateCcw, Trash2, AlertCircle } from 'lucide-react';
 
@@ -84,7 +85,7 @@ const GlobalTimerFinishModal = () => {
       return;
     }
     try {
-      const res = await fetch('http://localhost:5000/api/sessions', {
+      const res = await fetch(`${API_BASE}/api/sessions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
