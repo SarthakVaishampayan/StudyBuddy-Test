@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { yyyyMmDdLocal } from '../utils/date';
-
+import { API_BASE } from '../lib/api';
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
   'January','February','March','April','May','June',

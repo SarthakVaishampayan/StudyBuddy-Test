@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import { API_BASE } from '../lib/api';
 
 const AskAI = () => {
-  const { token, user } = useAuth();
+  const { token } = useAuth();
 
   const [documents, setDocuments] = useState([]);
   const [activeDoc, setActiveDoc] = useState(null);
@@ -47,6 +47,7 @@ const AskAI = () => {
 
   useEffect(() => {
     fetchDocuments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchDocuments = async () => {

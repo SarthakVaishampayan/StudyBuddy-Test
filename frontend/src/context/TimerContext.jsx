@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 const TimerContext = createContext(null);
@@ -70,7 +71,8 @@ export const TimerProvider = ({ children }) => {
           new Notification(title, { body });
         }
       }
-    } catch (e) {
+    } catch {
+      // ignore
     }
   };
 

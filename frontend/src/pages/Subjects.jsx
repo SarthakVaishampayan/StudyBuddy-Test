@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
@@ -58,7 +58,7 @@ const Subjects = () => {
   const [expandedId, setExpandedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [topicInputs, setTopicInputs] = useState({});
-  const [addingTopic, setAddingTopic] = useState({});
+
 
   const [form, setForm] = useState({
     name: '',
@@ -89,6 +89,7 @@ const Subjects = () => {
       }
     };
     fetchAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const handleAddSubject = async (e) => {

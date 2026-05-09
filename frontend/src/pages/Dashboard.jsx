@@ -107,7 +107,9 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+     
     if (token) fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, todayStr]);
 
   const startCountdown = () => {

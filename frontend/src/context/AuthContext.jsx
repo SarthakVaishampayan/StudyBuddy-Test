@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE } from '../lib/api';
@@ -39,6 +40,7 @@ export const AuthProvider = ({ children }) => {
       }
     };
     loadUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const login = async (email, password) => {

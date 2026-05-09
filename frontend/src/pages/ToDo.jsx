@@ -29,7 +29,9 @@ const Todo = () => {
   };
 
   useEffect(() => {
+     
     if (token) fetchAllData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const addTask = async (e) => {

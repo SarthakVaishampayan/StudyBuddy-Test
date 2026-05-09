@@ -108,6 +108,7 @@ const Analytics = () => {
 
   useEffect(() => {
     if (token) fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, liveDay]);
 
   if (loading) {

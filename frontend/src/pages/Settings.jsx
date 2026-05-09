@@ -139,7 +139,7 @@ const Settings = () => {
       } else {
         notifyError(data.message || 'Password change failed.');
       }
-    } catch (err) {
+    } catch {
       notifyError('Network error. Try again.');
     } finally {
       setPwLoading(false);

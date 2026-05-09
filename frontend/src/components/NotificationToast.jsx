@@ -35,8 +35,9 @@ const NotificationToast = () => {
   }, [toasts, startAutoClose]);
 
   useEffect(() => {
+    const timers = timersRef.current;
     return () => {
-      Object.values(timersRef.current).forEach((t) => clearTimeout(t));
+      Object.values(timers).forEach((t) => clearTimeout(t));
     };
   }, []);
 
