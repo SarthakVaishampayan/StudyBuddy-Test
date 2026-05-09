@@ -1,0 +1,33 @@
+{
+  "name": "studybuddy-backend",
+  "version": "1.0.0",
+  "description": "StudyBuddy backend server - Phase 4 (auth + nodemon ready)",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "mern",
+    "study",
+    "productivity"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "groq-sdk": "^1.1.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.23.0",
+    "multer": "^2.1.1",
+    "officeparser": "^6.1.0",
+    "pdf-parse": "^2.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
