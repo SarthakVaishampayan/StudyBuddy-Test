@@ -16,6 +16,7 @@ import marksRoutes from "./routes/marks.js";
 import linksRoutes from "./routes/links.js";
 import aiRoutes from "./routes/ai.js";
 import calendarRoutes from "./routes/calendar.js";
+import contactRoutes from "./routes/contact.js";
 const app = express();
 
 const frontendOrigin = process.env.FRONTEND_URL 
@@ -53,6 +54,7 @@ app.use("/api/marks", marksRoutes);
 app.use("/api/links", linksRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/calendar", calendarRoutes);
+app.use("/api/contact", contactRoutes);
 
 app.get("/api/health", (req, res) => {
   res.status(200).json({

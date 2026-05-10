@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
-import { API_BASE } from '../lib/api';
+import { API_BASE, apiJson } from '../lib/api';
 import {
   Mail, Github, Linkedin, Send, Bug, MessageSquare, Sparkles,
   Timer, BarChart3, CheckCircle2, CalendarDays, ListChecks,
@@ -11,7 +11,7 @@ import {
 
 const AboutUs = () => {
   const { user, token } = useAuth();
-  const { notifyError, notifyInfo } = useNotification();
+  const { notifyError, notifyInfo, notifySuccess } = useNotification();
 
   const appVersion = import.meta.env.VITE_APP_VERSION || '0.0.0';
 
@@ -119,8 +119,29 @@ const AboutUs = () => {
 
     try {
       setSubmitting(true);
-      await new Promise((r) => setTimeout(r, 500));
-      notifyInfo('Contact form is ready. Email sending will be enabled in the next update (EmailJS).');
+      if (!token) {
+        notifyError('You must be logged in to submit this form.');
+        return;
+      }
+
+      const { res, data } = await apiJson('/api/contact', {
+        token,
+        method: 'POST',
+        body: {
+          name: form.name.trim(),
+          email: form.email.trim(),
+          subject: form.subject.trim(),
+          type: form.type,
+          message: form.message.trim(),
+        },
+      });
+
+      if (!res.ok || !data?.success) {
+        notifyError(data?.message || 'Failed to submit. Please try again.');
+        return;
+      }
+
+      notifySuccess(data?.message || 'Submitted successfully.');
       setForm((prev) => ({ ...prev, subject: '', type: 'bug', message: '' }));
     } catch (err) {
       console.error(err);
@@ -337,7 +358,7 @@ const AboutUs = () => {
               <MessageSquare size={20} className="text-primary" />
               Contact / Report Bug / Query
             </h5>
-            <span className="text-muted small">Replies: coming via EmailJS (next update)</span>
+            <span className="text-muted small">We’ll reply to your email if needed</span>
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -422,7 +443,7 @@ const AboutUs = () => {
           </form>
 
           <div className="mt-3 text-muted small">
-            Note: Email sending is intentionally disabled right now. We'll enable it using EmailJS in the next update.
+            Note: Submissions are saved to the server now. Email delivery can be added later (e.g. EmailJS/Nodemailer).
           </div>
         </div>
       </div>
