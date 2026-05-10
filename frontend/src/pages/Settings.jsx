@@ -302,7 +302,7 @@ const Settings = () => {
               </div>
             </div>
 
-            {/* 3. Notifications & Appearance */}
+            {/* 3. Notifications & Appearance
             <div className="bg-white rounded-4 shadow-sm border overflow-hidden mb-4">
               <div className="p-4 border-bottom" style={{ background: '#f8f9ff' }}>
                 <h6 className="fw-bold mb-0">Notifications & Appearance</h6>
@@ -364,7 +364,7 @@ const Settings = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* 4. Danger Zone */}
             <div className="bg-white rounded-4 shadow-sm border overflow-hidden">
